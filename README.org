@@ -6,7 +6,7 @@
 [[https://github.com/MArpogaus/emacs-package-template/stargazers][https://img.shields.io/github/stars/MArpogaus/emacs-package-template.svg?style=flat-square]]
 [[https://github.com/MArpogaus/emacs-package-template/issues][https://img.shields.io/github/issues/MArpogaus/emacs-package-template.svg?style=flat-square]]
 [[https://github.com/MArpogaus/emacs-package-template/blob/main/COPYING][https://img.shields.io/github/license/MArpogaus/emacs-package-template.svg?style=flat-square]]
-[[https://github.com/MArpogaus/emacs-package-template/actions/workflows/test.yml][https://img.shields.io/github/actions/workflow/status/MArpogaus/emacs-package-template/test.yml?branch=main&style=flat-square&label=tests]]
+[[https://github.com/MArpogaus/emacs-package-template/actions/workflows/test.yml][https://img.shields.io/github/actions/workflow/status/MArpogaus/emacs-package-template/test.yml.svg?branch=main&label=tests&style=flat-square]]
 [[https://linkedin.com/in/MArpogaus][https://img.shields.io/badge/-LinkedIn-black.svg?style=flat-square&logo=linkedin&colorB=555]]
 
 * Emacs Package Template :TOC_3_gh:noexport:
