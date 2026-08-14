@@ -94,7 +94,10 @@ checkout needs nothing but Emacs and =make=.
 - Docstrings end sentences with two spaces, name their arguments in
   upper case and quote symbols as =`symbol'=.
 - Commits follow the conventional commit style; work happens on =dev=
-  and reaches =main= as a fast-forward merge.
+  and reaches =main= as a merge commit, which is then tagged.
+- Code written with an AI assistant carries an =Assisted-by:= line under
+  the =Author:= line, which is what MELPA asks for:
+  =;; Assisted-by: Claude:claude-opus-5=.
 
 ** Publishing on MELPA
 
