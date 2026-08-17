@@ -6,7 +6,7 @@
 [[https://github.com/MArpogaus/emacs-package-template/stargazers][https://img.shields.io/github/stars/MArpogaus/emacs-package-template.svg?style=flat-square]]
 [[https://github.com/MArpogaus/emacs-package-template/issues][https://img.shields.io/github/issues/MArpogaus/emacs-package-template.svg?style=flat-square]]
 [[https://github.com/MArpogaus/emacs-package-template/blob/main/COPYING][https://img.shields.io/github/license/MArpogaus/emacs-package-template.svg?style=flat-square]]
-[[https://github.com/MArpogaus/emacs-package-template/actions/workflows/test.yml][https://img.shields.io/github/actions/workflow/status/MArpogaus/emacs-package-template/test.yml?branch=main&style=flat-square&label=tests]]
+[[https://github.com/MArpogaus/emacs-package-template/actions/workflows/test.yml][https://img.shields.io/github/actions/workflow/status/MArpogaus/emacs-package-template/test.yml.svg?branch=main&label=tests&style=flat-square]]
 [[https://linkedin.com/in/MArpogaus][https://img.shields.io/badge/-LinkedIn-black.svg?style=flat-square&logo=linkedin&colorB=555]]
 
 * Emacs Package Template :TOC_3_gh:noexport:
@@ -94,7 +94,10 @@ checkout needs nothing but Emacs and =make=.
 - Docstrings end sentences with two spaces, name their arguments in
   upper case and quote symbols as =`symbol'=.
 - Commits follow the conventional commit style; work happens on =dev=
-  and reaches =main= as a fast-forward merge.
+  and reaches =main= as a merge commit, which is then tagged.
+- Code written with an AI assistant carries an =Assisted-by:= line under
+  the =Author:= line, which is what MELPA asks for:
+  =;; Assisted-by: Claude:claude-opus-5=.
 
 ** Publishing on MELPA
 
