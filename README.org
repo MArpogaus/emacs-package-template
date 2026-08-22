@@ -109,7 +109,9 @@ The formatter is =tools/indent.el=, and it is the indentation
 line reflowed, so what a reader lined up by hand stays as it is.  It
 visits each file rather than reading it, which is how the
 =indent-tabs-mode= of =.dir-locals.el= applies rather than the default
-of whichever Emacs runs it.
+of whichever Emacs runs it, and it loads each file first, because a
+macro that is not defined looks like a function call and its body would
+be lined up as an argument.
 
 The =pre-commit= workflow runs the same hooks over every file, so a
 commit made without them is still checked.  Dependabot proposes action
