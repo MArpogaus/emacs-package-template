@@ -16,6 +16,7 @@
     - [[#file-structure][File Structure]]
   - [[#development][Development]]
     - [[#make-targets][Make Targets]]
+    - [[#hooks][Hooks]]
     - [[#conventions][Conventions]]
   - [[#publishing-on-melpa][Publishing on MELPA]]
   - [[#contributions][Contributions]]
@@ -57,15 +58,20 @@ release you support, and list that release first in the CI matrix.
 *** File Structure
 
 #+begin_example
-  .dir-locals.el              indentation and fill column for contributors
-  .elpaignore                 files MELPA leaves out of the package
-  .github/workflows/test.yml  CI, one job per supported Emacs version
+  .dir-locals.el                    indentation and fill column for contributors
+  .elpaignore                       files MELPA leaves out of the package
+  .github/dependabot.yml            weekly action updates, onto dev
+  .github/workflows/test.yml        CI, one job per supported Emacs version
+  .github/workflows/pre-commit.yml  CI, the hooks over every file
+  .github/workflows/release.yml     a release for each pushed tag
   .gitignore
-  COPYING                     GPLv3
-  Makefile                    compile, checkdoc, lint, test
+  .pre-commit-config.yaml           the hooks
+  COPYING                           GPLv3
+  Makefile                          compile, checkdoc, lint, test, format
   README.org
-  my-package.el               the package
-  test/my-package-test.el     ERT suite
+  my-package.el                     the package
+  test/my-package-test.el           ERT suite
+  tools/indent.el                   the formatter
 #+end_example
 
 ** Development
@@ -78,11 +84,37 @@ release you support, and list that release first in the CI matrix.
 | =checkdoc= | documentation style, any output fails           |
 | =lint=     | package-lint, the rules MELPA applies           |
 | =test=     | ERT suite                                       |
+| =format=   | indent every Lisp file in place                 |
 | =clean=    | remove build output and the tool sandbox        |
 
-Plain =make= runs all checks in that order, exactly as the CI does.
-The =lint= target installs package-lint into =.sandbox/=, so a fresh
-checkout needs nothing but Emacs and =make=.
+Plain =make= runs the four checks in that order, exactly as the CI
+does; =format= is not one of them, because it writes.  The =lint=
+target installs package-lint into =.sandbox/=, so a fresh checkout
+needs nothing but Emacs and =make=.
+
+*** Hooks
+
+#+begin_src shell
+  pre-commit install --install-hooks -t pre-commit -t commit-msg -t pre-push
+#+end_src
+
+Before a commit: the whitespace and merge-conflict checks, YAML
+formatted by =pretty-format-yaml=, the indentation, and checkdoc.  On
+the message: commitizen, so every commit reads =type: summary=.  Before
+a push: package-lint, the byte-compilation and the suite — the slow
+ones, where they cost a push rather than a commit.
+
+The formatter is =tools/indent.el=, and it is the indentation
+=indent-region= gives Lisp and nothing more: no form is rewritten and no
+line reflowed, so what a reader lined up by hand stays as it is.  It
+visits each file rather than reading it, which is how the
+=indent-tabs-mode= of =.dir-locals.el= applies rather than the default
+of whichever Emacs runs it.
+
+The =pre-commit= workflow runs the same hooks over every file, so a
+commit made without them is still checked.  Dependabot proposes action
+updates weekly against =dev=; the actions are pinned to commit hashes,
+which [[https://github.com/suzuki-shunsuke/pinact][pinact]] both writes and verifies.
 
 *** Conventions
 
