@@ -77,12 +77,29 @@ release you support, and list that release first in the CI matrix.
 | =compile=  | byte-compile, warnings are errors               |
 | =checkdoc= | documentation style, any output fails           |
 | =lint=     | package-lint, the rules MELPA applies           |
+| =relint=   | the regular expressions and the docstring escapes |
 | =test=     | ERT suite                                       |
 | =clean=    | remove build output and the tool sandbox        |
 
 Plain =make= runs all checks in that order, exactly as the CI does.
-The =lint= target installs package-lint into =.sandbox/=, so a fresh
-checkout needs nothing but Emacs and =make=.
+The =lint= and =relint= targets install their tools into =.sandbox/=,
+so a fresh checkout needs nothing but Emacs and =make=.
+
+*** The Hooks
+
+=.pre-commit-config.yaml= runs the same checks before a commit, and the
+heavier ones before a push:
+
+#+begin_src shell
+  pre-commit install --install-hooks -t pre-commit -t commit-msg -t pre-push
+#+end_src
+
+Whitespace, YAML and the commit message come from the usual hook
+repositories.  [[https://github.com/MArpogaus/elisp-complexity][elisp-complexity]] scores each function by how much of it a
+reader has to hold at once and stops a commit where one function costs
+more than 15; it says nothing when everything is under.  =checkdoc= and
+=relint= run on every commit, =package-lint= and the suite before a
+push.
 
 *** Conventions
 
@@ -95,6 +112,8 @@ checkout needs nothing but Emacs and =make=.
   upper case and quote symbols as =`symbol'=.
 - Commits follow the conventional commit style; work happens on =dev=
   and reaches =main= as a merge commit, which is then tagged.
+- A function that costs a reader more than 15 is worth splitting; the
+  complexity hook says which one and by how much.
 - Code written with an AI assistant carries an =Assisted-by:= line under
   the =Author:= line, which is what MELPA asks for:
   =;; Assisted-by: Claude:claude-opus-5=.
