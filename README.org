@@ -31,8 +31,8 @@ in place, so the first commit is about the feature and not about
 scaffolding.
 
 Everything here is checked by the same pipeline the other packages use.
-Running =make= byte-compiles with warnings as errors, runs =checkdoc=
-and =package-lint=, and runs the test suite.
+Running =make= byte-compiles with warnings as errors, runs =checkdoc=,
+=package-lint= and =relint=, and runs the test suite.
 
 ** Getting Started
 
@@ -67,7 +67,7 @@ release you support, and list that release first in the CI matrix.
   .gitignore
   .pre-commit-config.yaml           the hooks
   COPYING                           GPLv3
-  Makefile                          compile, checkdoc, lint, test, format
+  Makefile                          compile, checkdoc, lint, relint, test
   README.org
   my-package.el                     the package
   test/my-package-test.el           ERT suite
@@ -93,7 +93,7 @@ Plain =make= runs every check in that order, exactly as the CI does;
 =relint= targets install their tools into =.sandbox/=, so a fresh
 checkout needs nothing but Emacs and =make=.
 
-*** The Hooks
+*** Hooks
 
 =.pre-commit-config.yaml= runs the same checks before a commit, and the
 heavier ones before a push:

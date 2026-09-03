@@ -67,7 +67,7 @@ lint: $(STAMP)
 
 # What checkdoc and package-lint both let through: a docstring escape
 # written \= rather than \\=, which the reader eats, so `describe-function'
-# shows the wrong thing.
+# shows the reader the = as text.
 relint: $(STAMP)
 	@$(BATCH) -l relint -f relint-batch $(SRC) $(TEST)
 
