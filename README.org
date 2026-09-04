@@ -99,7 +99,7 @@ heavier ones before a push:
 #+end_src
 
 Whitespace, YAML and the commit message come from the usual hook
-repositories.  [[https://github.com/MArpogaus/elisp-complexity][elisp-complexity]] carries the four Lisp checks: the first
+repositories.  [[https://github.com/MArpogaus/emacs-pre-commit-hooks][emacs-pre-commit-hooks]] carries the four Lisp checks: the first
 three run on every commit, while =relint= reads the regexps and the
 docstring escapes beside them, and =package-lint=, check-declare,
 melpazoid and the suite run before a push.
