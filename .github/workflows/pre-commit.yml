@@ -31,11 +31,9 @@ jobs:
     - run: |
         sudo apt-get install emacs && emacs --version
         git clone --depth 1 https://github.com/riscy/melpazoid.git ~/melpazoid
-    # The recipe names this repository, not the package's own: melpazoid
-    # asks GitHub about the repository it reads, and a package built from
-    # the skeleton has none yet.  A copy of the skeleton puts its own
-    # repository here.  The string is unquoted because the YAML formatter
-    # writes a plain scalar, and a quoted one fails that hook.
+    # melpazoid asks GitHub about the repository the recipe names, so it
+    # must be one that exists.  The string is unquoted because the YAML
+    # formatter writes a plain scalar, and a quoted one fails that hook.
     - env:
         LOCAL_REPO: ${{ github.workspace }}
         RECIPE: (my-package :fetcher github :repo "MArpogaus/emacs-package-template")
