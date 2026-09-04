@@ -40,7 +40,9 @@ and =relint=, and runs the test suite.
 
 Create a repository from this template on GitHub, then rename the
 placeholder to the package name.  The name appears in the file names,
-in the symbol prefix and in the URLs:
+in the symbol prefix and in the URLs; the second replacement below is
+what turns the skeleton's own repository, which the =URL= header and the
+melpazoid recipe name, into yours:
 
 #+begin_src shell
   name=your-package

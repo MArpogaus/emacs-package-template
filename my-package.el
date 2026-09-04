@@ -7,7 +7,7 @@
 ;; Version: 0.1
 ;; Package-Requires: ((emacs "29.1"))
 ;; Keywords: convenience
-;; URL: https://github.com/MArpogaus/my-package
+;; URL: https://github.com/MArpogaus/emacs-package-template
 
 ;; This file is not part of GNU Emacs.
 
