@@ -99,10 +99,10 @@ heavier ones before a push:
 #+end_src
 
 Whitespace, YAML and the commit message come from the usual hook
-repositories.  [[https://github.com/MArpogaus/elisp-complexity][elisp-complexity]] carries the three Lisp checks, which run
-on every commit, while =relint= reads the regexps and the docstring
-escapes beside them, and =package-lint= and the suite run before a
-push.
+repositories.  [[https://github.com/MArpogaus/elisp-complexity][elisp-complexity]] carries the four Lisp checks: the first
+three run on every commit, while =relint= reads the regexps and the
+docstring escapes beside them, and =package-lint=, check-declare,
+melpazoid and the suite run before a push.
 
 - =elisp-complexity= scores each function by how much of it a reader
   has to hold at once and stops a commit where one costs more than 15;
@@ -117,6 +117,9 @@ push.
   an argument.
 - =elisp-checkdoc= reads the documentation strings, and any output at
   all is a failure, since checkdoc itself always exits zero.
+- =elisp-check-declare= verifies the =declare-function= forms; a
+  declare whose function is no longer where it says is what a rename
+  leaves behind.
 
 The =pre-commit= workflow runs the same hooks over every file, so a
 commit made without them is still checked.  Dependabot proposes action
