@@ -31,8 +31,8 @@ in place, so the first commit is about the feature and not about
 scaffolding.
 
 Everything here is checked by the same pipeline the other packages use.
-Running =make= byte-compiles with warnings as errors, runs =checkdoc=,
-=package-lint= and =relint=, and runs the test suite.
+Running =make= byte-compiles with warnings as errors, runs =package-lint=
+and =relint=, and runs the test suite.
 
 ** Getting Started
 
@@ -67,31 +67,27 @@ release you support, and list that release first in the CI matrix.
   .gitignore
   .pre-commit-config.yaml           the hooks
   COPYING                           GPLv3
-  Makefile                          compile, checkdoc, lint, relint, test
+  Makefile                          compile, lint, relint, test
   README.org
   my-package.el                     the package
   test/my-package-test.el           ERT suite
-  tools/indent.el                   the formatter
 #+end_example
 
 ** Development
 
 *** Make Targets
 
-| Target     | What it does                                    |
-|------------+-------------------------------------------------|
-| =compile=  | byte-compile, warnings are errors               |
-| =checkdoc= | documentation style, any output fails           |
-| =lint=     | package-lint, the rules MELPA applies           |
-| =relint=   | the regular expressions and the docstring escapes |
-| =test=     | ERT suite                                       |
-| =format=   | indent every Lisp file in place                 |
-| =clean=    | remove build output and the tool sandbox        |
+| Target    | What it does                                      |
+|-----------+---------------------------------------------------|
+| =compile= | byte-compile, warnings are errors                 |
+| =lint=    | package-lint, the rules MELPA applies             |
+| =relint=  | the regular expressions and the docstring escapes |
+| =test=    | ERT suite                                         |
+| =clean=   | remove build output and the tool sandbox          |
 
-Plain =make= runs every check in that order, exactly as the CI does;
-=format= is not one of them, because it writes.  The =lint= and
-=relint= targets install their tools into =.sandbox/=, so a fresh
-checkout needs nothing but Emacs and =make=.
+Plain =make= runs every check in that order, exactly as the CI does.
+The =lint= and =relint= targets install their tools into =.sandbox/=,
+so a fresh checkout needs nothing but Emacs and =make=.
 
 *** Hooks
 
@@ -103,20 +99,24 @@ heavier ones before a push:
 #+end_src
 
 Whitespace, YAML and the commit message come from the usual hook
-repositories.  [[https://github.com/MArpogaus/elisp-complexity][elisp-complexity]] scores each function by how much of it a
-reader has to hold at once and stops a commit where one function costs
-more than 15; it says nothing when everything is under.  The
-indentation, =checkdoc= and =relint= run on every commit,
-=package-lint= and the suite before a push.
+repositories.  [[https://github.com/MArpogaus/elisp-complexity][elisp-complexity]] carries the three Lisp checks, which run
+on every commit, while =relint= reads the regexps and the docstring
+escapes beside them, and =package-lint= and the suite run before a
+push.
 
-The formatter is =tools/indent.el=, and it gives Lisp the indentation
-=indent-region= gives it and nothing more: no form is rewritten and no
-line reflowed, so what a reader lined up by hand stays as it is.  It
-visits each file rather than reading it, which is how the
-=indent-tabs-mode= of =.dir-locals.el= applies rather than the default
-of whichever Emacs runs it, and it loads each file first, because a
-macro that is not defined looks like a function call and its body would
-be lined up as an argument.
+- =elisp-complexity= scores each function by how much of it a reader
+  has to hold at once and stops a commit where one costs more than 15;
+  it says nothing when everything is under.
+- =elisp-indent= gives Lisp the indentation =indent-region= gives it
+  and nothing more: no form is rewritten and no line reflowed, so what
+  a reader lined up by hand stays as it is.  It visits each file
+  rather than reading it, which is how the =indent-tabs-mode= of
+  =.dir-locals.el= applies rather than the default of whichever Emacs
+  runs it, and it loads each file first, because a macro that is not
+  defined looks like a function call and its body would be lined up as
+  an argument.
+- =elisp-checkdoc= reads the documentation strings, and any output at
+  all is a failure, since checkdoc itself always exits zero.
 
 The =pre-commit= workflow runs the same hooks over every file, so a
 commit made without them is still checked.  Dependabot proposes action
