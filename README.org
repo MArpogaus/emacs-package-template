@@ -16,6 +16,7 @@
     - [[#file-structure][File Structure]]
   - [[#development][Development]]
     - [[#make-targets][Make Targets]]
+    - [[#hooks][Hooks]]
     - [[#conventions][Conventions]]
   - [[#publishing-on-melpa][Publishing on MELPA]]
   - [[#contributions][Contributions]]
@@ -30,8 +31,8 @@ in place, so the first commit is about the feature and not about
 scaffolding.
 
 Everything here is checked by the same pipeline the other packages use.
-Running =make= byte-compiles with warnings as errors, runs =checkdoc=
-and =package-lint=, and runs the test suite.
+Running =make= byte-compiles with warnings as errors, runs =package-lint=
+and =relint=, and runs the test suite.
 
 ** Getting Started
 
@@ -39,7 +40,9 @@ and =package-lint=, and runs the test suite.
 
 Create a repository from this template on GitHub, then rename the
 placeholder to the package name.  The name appears in the file names,
-in the symbol prefix and in the URLs:
+in the symbol prefix and in the URLs; the second replacement below is
+what turns the skeleton's own repository, which the =URL= header and the
+melpazoid recipe name, into yours:
 
 #+begin_src shell
   name=your-package
@@ -57,35 +60,38 @@ release you support, and list that release first in the CI matrix.
 *** File Structure
 
 #+begin_example
-  .dir-locals.el              indentation and fill column for contributors
-  .elpaignore                 files MELPA leaves out of the package
-  .github/workflows/test.yml  CI, one job per supported Emacs version
+  .dir-locals.el                    indentation and fill column for contributors
+  .elpaignore                       files MELPA leaves out of the package
+  .github/dependabot.yml            weekly action updates, onto dev
+  .github/workflows/test.yml        CI, one job per supported Emacs version
+  .github/workflows/pre-commit.yml  CI, the hooks over every file
+  .github/workflows/release.yml     a release for each pushed tag
   .gitignore
-  COPYING                     GPLv3
-  Makefile                    compile, checkdoc, lint, test
+  .pre-commit-config.yaml           the hooks
+  COPYING                           GPLv3
+  Makefile                          compile, lint, relint, test
   README.org
-  my-package.el               the package
-  test/my-package-test.el     ERT suite
+  my-package.el                     the package
+  test/my-package-test.el           ERT suite
 #+end_example
 
 ** Development
 
 *** Make Targets
 
-| Target     | What it does                                    |
-|------------+-------------------------------------------------|
-| =compile=  | byte-compile, warnings are errors               |
-| =checkdoc= | documentation style, any output fails           |
-| =lint=     | package-lint, the rules MELPA applies           |
-| =relint=   | the regular expressions and the docstring escapes |
-| =test=     | ERT suite                                       |
-| =clean=    | remove build output and the tool sandbox        |
+| Target    | What it does                                      |
+|-----------+---------------------------------------------------|
+| =compile= | byte-compile, warnings are errors                 |
+| =lint=    | package-lint, the rules MELPA applies             |
+| =relint=  | the regular expressions and the docstring escapes |
+| =test=    | ERT suite                                         |
+| =clean=   | remove build output and the tool sandbox          |
 
-Plain =make= runs all checks in that order, exactly as the CI does.
+Plain =make= runs every check in that order, exactly as the CI does.
 The =lint= and =relint= targets install their tools into =.sandbox/=,
 so a fresh checkout needs nothing but Emacs and =make=.
 
-*** The Hooks
+*** Hooks
 
 =.pre-commit-config.yaml= runs the same checks before a commit, and the
 heavier ones before a push:
@@ -95,11 +101,32 @@ heavier ones before a push:
 #+end_src
 
 Whitespace, YAML and the commit message come from the usual hook
-repositories.  [[https://github.com/MArpogaus/elisp-complexity][elisp-complexity]] scores each function by how much of it a
-reader has to hold at once and stops a commit where one function costs
-more than 15; it says nothing when everything is under.  =checkdoc= and
-=relint= run on every commit, =package-lint= and the suite before a
-push.
+repositories.  [[https://github.com/MArpogaus/emacs-pre-commit-hooks][emacs-pre-commit-hooks]] carries the four Lisp checks: the first
+three run on every commit, while =relint= reads the regexps and the
+docstring escapes beside them, and =package-lint=, check-declare,
+melpazoid and the suite run before a push.
+
+- =elisp-complexity= scores each function by how much of it a reader
+  has to hold at once and stops a commit where one costs more than 15;
+  it says nothing when everything is under.
+- =elisp-indent= gives Lisp the indentation =indent-region= gives it
+  and nothing more: no form is rewritten and no line reflowed, so what
+  a reader lined up by hand stays as it is.  It visits each file
+  rather than reading it, which is how the =indent-tabs-mode= of
+  =.dir-locals.el= applies rather than the default of whichever Emacs
+  runs it, and it loads each file first, because a macro that is not
+  defined looks like a function call and its body would be lined up as
+  an argument.
+- =elisp-checkdoc= reads the documentation strings, and any output at
+  all is a failure, since checkdoc itself always exits zero.
+- =elisp-check-declare= verifies the =declare-function= forms; a
+  declare whose function is no longer where it says is what a rename
+  leaves behind.
+
+The =pre-commit= workflow runs the same hooks over every file, so a
+commit made without them is still checked.  Dependabot proposes action
+updates weekly against =dev=; the actions are pinned to commit hashes,
+which [[https://github.com/suzuki-shunsuke/pinact][pinact]] both writes and verifies.
 
 *** Conventions
 

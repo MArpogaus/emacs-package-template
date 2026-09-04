@@ -6,6 +6,9 @@
 # made without the hooks is still checked.  A commit message is checked
 # too: `type: summary', a blank line, then the reasoning.  The licence
 # is verbatim by definition, so the whitespace hooks leave it alone.
+#
+# melpazoid is not among them: it ships no command to call, and the
+# workflow of the same name clones it and runs it over every push.
 exclude: ^COPYING$
 
 repos:
@@ -32,19 +35,15 @@ repos:
   - id: commitizen
   - id: commitizen-branch
     stages: [pre-push]
-- repo: https://github.com/MArpogaus/elisp-complexity
-  rev: v0.1.0
+- repo: https://github.com/MArpogaus/emacs-pre-commit-hooks
+  rev: v0.2.0
   hooks:
   - id: elisp-complexity
+  - id: elisp-indent
+  - id: elisp-checkdoc
+  - id: elisp-check-declare
 - repo: local
   hooks:
-  - id: checkdoc
-    name: checkdoc
-    description: The documentation style of every Lisp file.
-    entry: make checkdoc
-    language: system
-    files: \.el$
-    pass_filenames: false
   - id: relint
     name: relint
     description: The regexps and the doc string escapes of every Lisp file.
