@@ -40,7 +40,7 @@ and =relint=, and runs the test suite.
 *** Use the Template
 
 Create a repository from this template on GitHub, then rename the
-placeholder to the package name.  The name appears in the file names,
+placeholder to the package name. The name appears in the file names,
 in the symbol prefix and in the URLs; the second replacement below is
 what turns the skeleton's own repository, which the =URL= header and the
 melpazoid recipe name, into yours:
@@ -102,7 +102,7 @@ heavier ones before a push:
 #+end_src
 
 Whitespace, YAML and the commit message come from the usual hook
-repositories.  [[https://github.com/MArpogaus/emacs-pre-commit-hooks][emacs-pre-commit-hooks]] carries the four Lisp checks: the first
+repositories. [[https://github.com/MArpogaus/emacs-pre-commit-hooks][emacs-pre-commit-hooks]] carries the four Lisp checks: the first
 three run on every commit, while =relint= reads the regexps and the
 docstring escapes beside them, and =package-lint=, check-declare,
 melpazoid and the suite run before a push.
@@ -112,7 +112,7 @@ melpazoid and the suite run before a push.
   it says nothing when everything is under.
 - =elisp-indent= gives Lisp the indentation =indent-region= gives it
   and nothing more: no form is rewritten and no line reflowed, so what
-  a reader lined up by hand stays as it is.  It visits each file
+  a reader lined up by hand stays as it is. It visits each file
   rather than reading it, which is how the =indent-tabs-mode= of
   =.dir-locals.el= applies rather than the default of whichever Emacs
   runs it, and it loads each file first, because a macro that is not
@@ -125,7 +125,7 @@ melpazoid and the suite run before a push.
   leaves behind.
 
 The =pre-commit= workflow runs the same hooks over every file, so a
-commit made without them is still checked.  Dependabot proposes action
+commit made without them is still checked. Dependabot proposes action
 updates weekly against =dev=; the actions are pinned to commit hashes,
 which [[https://github.com/suzuki-shunsuke/pinact][pinact]] both writes and verifies.
 
@@ -158,7 +158,7 @@ which [[https://github.com/suzuki-shunsuke/pinact][pinact]] both writes and veri
    #+end_src
 
    Add =:branch "main"= when the default branch is not the one to
-   package.  The =.elpaignore= file keeps the tests and the CI files
+   package. The =.elpaignore= file keeps the tests and the CI files
    out; a =:files= specification is not needed.
 3. Check the recipe locally in the melpa checkout:
 
@@ -166,18 +166,18 @@ which [[https://github.com/suzuki-shunsuke/pinact][pinact]] both writes and veri
      make recipes/my-package
      make sandbox INSTALL=my-package
    #+end_src
-4. Open the pull request.  The checklist in the template asks for the
+4. Open the pull request. The checklist in the template asks for the
    package to be lint-clean, which =make lint= already answers.
 
 ** Contributions
 
-Contributions are greatly appreciated!  Feel free to check the
+Contributions are greatly appreciated! Feel free to check the
 [[https://github.com/MArpogaus/emacs-package-template/issues][issues page]] or submit a [[https://github.com/MArpogaus/emacs-package-template/pulls][pull request]].
 
 ** Use of LLM Coding Tools
 
 Parts of this package were written with the help of a large
-language model (LLM) coding assistant.  A person reviewed and tested
+language model (LLM) coding assistant. A person reviewed and tested
 every change before it was committed.
 
 ** License
